@@ -31,6 +31,7 @@ RUN DJANGO_SETTINGS_MODULE=core.settings.production \
     REDIS_URL=redis://localhost:6379 \
     SOCIAL_AUTH_GITHUB_CLIENT_ID=placeholder \
     SOCIAL_AUTH_GITHUB_SECRET=placeholder \
+    FRONTEND_URL=http://localhost \
     python manage.py collectstatic --noinput
 
 EXPOSE 8000
