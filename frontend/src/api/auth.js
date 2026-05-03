@@ -1,4 +1,4 @@
-const BASE = '/api';
+const BASE = 'https://pcl-r0b3.onrender.com/api';
 
 const getHeaders = () => {
   const token = localStorage.getItem('access_token');
