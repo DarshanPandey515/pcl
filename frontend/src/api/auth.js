@@ -21,8 +21,7 @@ export const authAPI = {
   // ── Auth ──────────────────────────────────────────────────────────────────
   getGithubAuthUrl: async () => {
     const res = await fetch(`${BASE}/auth/github/`);
-    const data = await handle(res);  
-    window.location.href = data.auth_url;
+    return await handle(res); 
   },
 
   githubCallback: (code) =>
