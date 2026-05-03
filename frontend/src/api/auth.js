@@ -1,8 +1,8 @@
-// In production (Vercel), there is no Vite proxy, so we must call the
-// backend directly. VITE_API_URL is set as an env var on Vercel.
-// Locally, the Vite proxy rewrites /api → backend, so an empty string works.
-const BASE = (import.meta.env.VITE_API_URL || '') + '/api';
+const BASE = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL + '/api'
+  : '/api';
 
+  
 const getHeaders = () => {
   const token = localStorage.getItem('access_token');
   return {
