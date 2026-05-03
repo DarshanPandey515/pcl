@@ -10,14 +10,14 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser]       = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
-  const callbackRef           = useRef(false);
+  const [error, setError] = useState(null);
+  const callbackRef = useRef(false);
 
   // Restore session on mount
   useEffect(() => {
-    const token  = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
     const stored = localStorage.getItem('user');
     if (token && stored) {
       setUser(JSON.parse(stored));
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const _save = (data) => {
-    localStorage.setItem('access_token',  data.access);
+    localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
     localStorage.setItem('user', JSON.stringify(data.user));
     setUser(data.user);
@@ -45,12 +45,14 @@ export const AuthProvider = ({ children }) => {
 
   const githubLogin = async () => {
     try {
+      console.log('Starting GitHub login...');
       setError(null);
       const data = await authAPI.getGithubAuthUrl();
+      console.log('Got auth_url:', data.auth_url);
       window.location.href = data.auth_url;
     } catch (err) {
+      console.error('Login error:', err);
       setError(err.message);
-      throw err;
     }
   };
 
