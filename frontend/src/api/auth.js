@@ -1,7 +1,6 @@
 const BASE = import.meta.env.VITE_API_URL
-  ? import.meta.env.VITE_API_URL + '/api'
+  ? import.meta.env.VITE_API_URL.replace(/\/$/, '') + '/api'
   : '/api';
-
 
 const getHeaders = () => {
   const token = localStorage.getItem('access_token');
@@ -21,7 +20,6 @@ const handle = async (res) => {
 };
 
 export const authAPI = {
-  // ── Auth ──────────────────────────────────────────────────────────────────
   getGithubAuthUrl: () =>
     fetch(`${BASE}/auth/github/`).then(handle),
 
@@ -47,7 +45,6 @@ export const authAPI = {
     }).then(handle);
   },
 
-  // ── Profile ───────────────────────────────────────────────────────────────
   getProfile: () =>
     fetch(`${BASE}/profile/`, { headers: getHeaders() }).then(handle),
 
@@ -61,14 +58,12 @@ export const authAPI = {
   getPublicProfile: (username) =>
     fetch(`${BASE}/profile/${username}/`).then(handle),
 
-  // ── Analytics ─────────────────────────────────────────────────────────────
   getAnalytics: () =>
     fetch(`${BASE}/analytics/`, { headers: getHeaders() }).then(handle),
 
   getMomentumHistory: (days = 90) =>
     fetch(`${BASE}/analytics/momentum/?days=${days}`, { headers: getHeaders() }).then(handle),
 
-  // ── GitHub ────────────────────────────────────────────────────────────────
   syncGithub: () =>
     fetch(`${BASE}/github/sync/`, {
       method: 'POST',
@@ -81,14 +76,12 @@ export const authAPI = {
       headers: getHeaders(),
     }).then(handle),
 
-  // ── Discovery ─────────────────────────────────────────────────────────────
   searchContributors: (params) =>
     fetch(`${BASE}/contributors/search/?${params}`).then(handle),
 
   getLeaderboard: (limit = 50) =>
     fetch(`${BASE}/leaderboard/?limit=${limit}`).then(handle),
 
-  // ── Settings ──────────────────────────────────────────────────────────────
   updateSettings: (settings) =>
     fetch(`${BASE}/settings/`, {
       method: 'PUT',
