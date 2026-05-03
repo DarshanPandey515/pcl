@@ -45,13 +45,11 @@ export const AuthProvider = ({ children }) => {
 
   const githubLogin = async () => {
     try {
-      console.log('Starting GitHub login...');
       setError(null);
       const data = await authAPI.getGithubAuthUrl();
-      console.log('Got auth_url:', data.auth_url);
-      window.location.href = data.auth_url;
+      window.location.href = data.auth_url;   // single redirect
     } catch (err) {
-      console.error('Login error:', err);
+      console.error(err);
       setError(err.message);
     }
   };
