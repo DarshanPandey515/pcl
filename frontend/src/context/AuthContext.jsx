@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem('user');
     if (token && stored) {
       setUser(JSON.parse(stored));
-      // Verify & refresh from server
       authAPI.getProfile()
         .then((data) => { setUser(data); localStorage.setItem('user', JSON.stringify(data)); })
         .catch(() => _clear())
@@ -47,8 +46,26 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       const data = await authAPI.getGithubAuthUrl();
-      window.location.href = data.auth_url;
+
+      // Log the full response so we can see exactly what the backend returns
+      console.log('[githubLogin] response from /api/auth/github/:', data);
+
+      // Backend might return the URL under different key names — handle all of them
+      const authUrl = data.auth_url
+        || data.url
+        || data.authorization_url
+        || data.redirect_url
+        || data.github_url;
+
+      if (!authUrl) {
+        const msg = `Backend did not return a redirect URL. Got: ${JSON.stringify(data)}`;
+        console.error('[githubLogin]', msg);
+        throw new Error('Could not get GitHub login URL. Please try again.');
+      }
+
+      window.location.href = authUrl;
     } catch (err) {
+      console.error('[githubLogin] error:', err);
       setError(err.message);
       throw err;
     }
