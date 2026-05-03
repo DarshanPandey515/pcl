@@ -19,8 +19,11 @@ const handle = async (res) => {
 
 export const authAPI = {
   // ── Auth ──────────────────────────────────────────────────────────────────
-  getGithubAuthUrl: () =>
-    fetch(`${BASE}/auth/github/`).then(handle),
+  getGithubAuthUrl: async () => {
+    const res = await fetch(`${BASE}/auth/github/`);
+    const data = await handle(res);  
+    window.location.href = data.auth_url;
+  },
 
   githubCallback: (code) =>
     fetch(`${BASE}/auth/github/callback/`, {
