@@ -2,7 +2,7 @@ const BASE = import.meta.env.VITE_API_URL
   ? import.meta.env.VITE_API_URL + '/api'
   : '/api';
 
-  
+
 const getHeaders = () => {
   const token = localStorage.getItem('access_token');
   return {
