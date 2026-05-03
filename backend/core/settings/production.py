@@ -14,7 +14,8 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 
 ALLOWED_HOSTS = [
     config("RENDER_EXTERNAL_HOSTNAME", default=""),  # auto-injected by Render
-    *config("ALLOWED_HOSTS", default="").split(","),  # any extra hosts you need
+    # any extra hosts you need
+    *config("ALLOWED_HOSTS", default="").split(","),
 ]
 ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
 
@@ -33,7 +34,8 @@ DATABASES = {
 # Upstash URLs start with rediss:// (TLS). ssl_cert_reqs=CERT_NONE avoids
 # hostname verification issues on Upstash's shared certs.
 
-_REDIS_URL = config("REDIS_URL")  # rediss://default:<pass>@<host>.upstash.io:6379
+# rediss://default:<pass>@<host>.upstash.io:6379
+_REDIS_URL = config("REDIS_URL")
 
 CACHES = {
     "default": {
@@ -67,14 +69,20 @@ CELERY_REDIS_BACKEND_USE_SSL = {"ssl_cert_reqs": ssl.CERT_NONE}
 # ── CORS ───────────────────────────────────────────────────────────────────────
 
 FRONTEND_URL = config("FRONTEND_URL")
-CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+CORS_ALLOWED_ORIGINS = config(
+    "CORS_ALLOWED_ORIGINS",
+    default="http://localhost:5173",
+).split(",")
+
+
 # Methods, headers, and credentials are all inherited from base.
 
 # ── Security headers ───────────────────────────────────────────────────────────
 # Render terminates TLS at the edge — the Django app receives plain HTTP
 # internally, so SECURE_SSL_REDIRECT must be OFF (Render enforces HTTPS itself).
 
-SECURE_SSL_REDIRECT = False                 # DO NOT enable — breaks Render health checks
+# DO NOT enable — breaks Render health checks
+SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 SECURE_BROWSER_XSS_FILTER = True
