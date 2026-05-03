@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: gitvisualizer-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile          # relative to repo root
+    dockerContext: .                      # build context = repo root
+    plan: free
+
+    # Render injects RENDER_EXTERNAL_HOSTNAME automatically.
+    # Add the rest as Environment Variables in the Render dashboard
+    # (or uncomment and fill in here — but never commit real secrets).
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: core.settings.production
+
+      - key: DJANGO_SECRET_KEY
+        sync: false                       # set in Render dashboard
+
+      - key: REDIS_URL
+        sync: false                       # your Upstash rediss:// URL
+
+      - key: CELERY_BROKER_URL
+        sync: false                       # same Upstash URL
+
+      - key: CELERY_RESULT_BACKEND
+        sync: false                       # same Upstash URL (or /1 db)
+
+      - key: SOCIAL_AUTH_GITHUB_CLIENT_ID
+        sync: false
+
+      - key: SOCIAL_AUTH_GITHUB_SECRET
+        sync: false
+
+      - key: FRONTEND_URL
+        sync: false                       # e.g. https://yourapp.vercel.app
+
+      - key: GITHUB_TOKEN
+        sync: false                       
