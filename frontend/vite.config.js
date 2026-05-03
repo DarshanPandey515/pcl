@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://pcl-r0b3.onrender.com/',
+        target: 'https://pcl-r0b3.onrender.com',
         changeOrigin: true,
       },
     },
